@@ -10,6 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 let webConfig = {
   devtool: '#cheap-module-eval-source-map',
@@ -22,20 +23,29 @@ let webConfig = {
         test: /\.(js|vue)$/,
         enforce: 'pre',
         exclude: /node_modules/,
-        use: {
-          loader: 'eslint-loader',
-          options: {
-            formatter: require('eslint-friendly-formatter')
+        use: [
+          {
+            loader: 'eslint-loader',
+            options: {
+              formatter: require('eslint-friendly-formatter')
+            }
           }
-        }
+        ]
       },
       {
-        test: /\.scss$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader']
-      },
-      {
-        test: /\.sass$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
+        test: /\.s(c|a)ss$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              fiber: require('fibers'),
+              indentedSyntax: true
+            }
+          }
+        ]
       },
       {
         test: /\.less$/,
@@ -93,6 +103,7 @@ let webConfig = {
   },
   plugins: [
     new VueLoaderPlugin(),
+    new VuetifyLoaderPlugin(),
     new MiniCssExtractPlugin({filename: 'styles.css'}),
     new HtmlWebpackPlugin({
       filename: 'index.html',
