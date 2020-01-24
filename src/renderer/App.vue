@@ -1,38 +1,14 @@
 <template>
     <div id="app">
-        <v-app id="inspire">
+        <v-app>
             <v-navigation-drawer
-                    v-model="drawer"
-                    app
                     clipped
+                    permanent
             >
-                <v-list dense>
-                    <v-list-item link>
-                        <v-list-item-action>
-                            <v-icon>mdi-view-dashboard</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>Dashboard</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item link>
-                        <v-list-item-action>
-                            <v-icon>mdi-settings</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>Settings</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </v-navigation-drawer>
 
-            <v-app-bar
-                    app
-                    clipped-left
-            >
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
-                <v-toolbar-title>Application</v-toolbar-title>
-            </v-app-bar>
+                <PlaylistContainer/>
+
+            </v-navigation-drawer>
 
             <v-content>
                 <v-container
@@ -46,7 +22,8 @@
 </template>
 
 <script>
-  import {Titlebar, Color} from 'custom-electron-titlebar'
+  import {Color, Titlebar} from 'custom-electron-titlebar'
+  import PlaylistContainer from './PlaylistContainer'
 
   // eslint-disable-next-line no-new
   new Titlebar({
@@ -54,9 +31,10 @@
   })
   export default {
     name: 'cloudmusic',
+    components: {PlaylistContainer},
     props: {},
     data: () => ({
-      drawer: null
+
     }),
     created () {
       this.$vuetify.theme.dark = true
@@ -69,5 +47,9 @@
 
     body {
         font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    div#app {
+        overflow-y: hidden;
     }
 </style>
